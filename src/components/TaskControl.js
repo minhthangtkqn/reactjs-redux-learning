@@ -1,8 +1,8 @@
 import React from 'react';
-import Sort from './Sort';
-import Search from './Search';
+import TaskSort from './TaskSort';
+import TaskSearch from './TaskSearch';
 
-class Control extends React.Component {
+class TaskControl extends React.Component {
 
     onSubmitSearch = (keyword) => {
         this.props.onSubmitSearch(keyword)
@@ -13,15 +13,15 @@ class Control extends React.Component {
             <div className="panel panel-warning">
                 <div className="panel-body">
                     {/* Search */}
-                    <Search
+                    <TaskSearch
                         onSubmitSearch={this.onSubmitSearch} />
 
                     {/* Sort */}
-                    <Sort />
+                    <TaskSort />
                 </div>
             </div>
         );
     }
 }
 
-export default Control
+export default TaskControl

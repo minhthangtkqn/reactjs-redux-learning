@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import TaskForm from './components/TaskForm';
-import Control from './components/Control';
+import TaskControl from './components/TaskControl';
 import TaskList from './components/TaskList';
 
 class App extends Component {
@@ -10,13 +10,17 @@ class App extends Component {
 
         this.state = {
             tasks: [],
-            isDisplayAddForm: false,
+            keyword: '',
             taskEditing: null,
+            isDisplayAddForm: false,
             filter: {
                 name: '',
                 status: -1
             },
-            keyword: ''
+            sort: {
+                by: 'name',
+                value: 1
+            }
         };
     }
 
@@ -197,7 +201,7 @@ class App extends Component {
                         {/* Search & sort */}
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <Control
+                                <TaskControl
                                     onSubmitSearch={this.onSubmitSearch} />
                             </div>
                         </div>
