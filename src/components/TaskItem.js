@@ -9,6 +9,10 @@ class TaskItem extends React.Component {
         this.props.onDeleteItem(this.props.task.id);
     }
 
+    onUpdateItem = () => {
+        this.props.onUpdateItem(this.props.task.id);
+    }
+
     render() {
         const { task, index } = this.props;
 
@@ -25,7 +29,12 @@ class TaskItem extends React.Component {
                     </span>
                 </td>
                 <td>
-                    <button className="btn btn-warning" type="button">Edit</button>
+                    <button
+                        className="btn btn-warning"
+                        onClick={this.onUpdateItem}
+                        type="button">
+                        Edit
+                    </button>
                     &nbsp;&nbsp;
 
                     <button

@@ -5,8 +5,37 @@ class TaskForm extends React.Component {
         super(props);
 
         this.state = {
+            id: '',
             name: '',
             status: false
+        }
+    }
+
+    componentWillMount() {
+        if (this.props.taskEditing) {
+            this.setState({
+                id: this.props.taskEditing.id,
+                name: this.props.taskEditing.name,
+                status: this.props.taskEditing.status
+            });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps) {
+            if (nextProps.taskEditing) {
+                this.setState({
+                    id: nextProps.taskEditing.id,
+                    name: nextProps.taskEditing.name,
+                    status: nextProps.taskEditing.status
+                });
+            } else {
+                this.setState({
+                    id: '',
+                    name: '',
+                    status: false
+                });
+            }
         }
     }
 
@@ -40,13 +69,13 @@ class TaskForm extends React.Component {
     }
 
     render() {
-        const { name, status } = this.state;
+        const { name, status, id } = this.state;
 
         return (
             <div className="panel panel-warning">
                 <div className="panel-heading">
                     <h3 className="panel-title">
-                        Add work
+                        {id !== '' ? 'Update work' : 'Add work'}
                         <span onClick={this.props.onCloseForm} className="fa fa-times-circle text-right" />
                     </h3>
                 </div>
@@ -65,7 +94,7 @@ class TaskForm extends React.Component {
                         </div>
                         <div className="form-group">
                             <label htmlFor="status">Status: </label>
-                            <select 
+                            <select
                                 name="status"
                                 className="form-control"
                                 value={status}
@@ -82,7 +111,7 @@ class TaskForm extends React.Component {
                                 className="btn btn-danger"
                                 type="button"
                                 onClick={this.onClearForm}
-                                >
+                            >
                                 Clear
                             </button>
                         </div>

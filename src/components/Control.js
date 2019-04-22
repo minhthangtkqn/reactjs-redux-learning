@@ -3,15 +3,21 @@ import Sort from './Sort';
 import Search from './Search';
 
 class Control extends React.Component {
+
+    onSubmitSearch = (keyword) => {
+        this.props.onSubmitSearch(keyword)
+    }
+
     render() {
         return (
             <div className="panel panel-warning">
                 <div className="panel-body">
                     {/* Search */}
-                    <Search/>
+                    <Search
+                        onSubmitSearch={this.onSubmitSearch} />
 
                     {/* Sort */}
-                    <Sort/>
+                    <Sort />
                 </div>
             </div>
         );

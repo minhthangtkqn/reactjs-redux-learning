@@ -10,7 +10,13 @@ class App extends Component {
 
         this.state = {
             tasks: [],
-            isDisplayAddForm: false
+            isDisplayAddForm: false,
+            taskEditing: null,
+            filter: {
+                name: '',
+                status: -1
+            },
+            keyword: ''
         };
     }
 
@@ -32,28 +38,66 @@ class App extends Component {
     }
 
     toggleAddWorkForm = () => {
-        this.setState({
-            isDisplayAddForm: !this.state.isDisplayAddForm
-        })
+        if (this.state.isDisplayAddForm && this.state.taskEditing !== null) {
+            this.setState({
+                taskEditing: null
+            })
+        } else {
+            this.setState({
+                isDisplayAddForm: !this.state.isDisplayAddForm,
+                taskEditing: null,
+            })
+        }
     }
 
     onSubmitTaskForm = (data) => {
-        var task = {
-            id: this.generateRandomId(),
-            name: data.name,
-            status: data.status
+        var { tasks } = this.state;
+
+        if (data.id === '') {
+            // add new
+            data.id = this.generateRandomId();
+            tasks.push(data);
+        } else {
+            // edit
+            var index = this.findIndexById(data.id, this.state.tasks);
+            tasks[index] = data;
         }
-        var tasks = this.state.tasks;
-        tasks.push(task);
+
         this.setState({
-            tasks: tasks
+            tasks: tasks,
+            taskEditing: null
         })
         localStorage.setItem('tasks', JSON.stringify(tasks));
+
     }
 
     onCloseForm = () => {
         this.setState({
             isDisplayAddForm: false
+        });
+    }
+
+    onOpenForm = () => {
+        this.setState({
+            isDisplayAddForm: true
+        });
+    }
+
+    onUpdateItem = (taskId) => {
+        var index = this.findIndexById(taskId, this.state.tasks);
+        var taskEditing = this.state.tasks[index]
+        this.setState({
+            taskEditing: taskEditing
+        });
+        this.onOpenForm();
+    }
+
+    onChangeFilterValue = (filterData) => {
+        this.setState({
+            filter: {
+                name: filterData.filterName,
+                status: filterData.filterStatus
+            }
         })
     }
 
@@ -95,8 +139,38 @@ class App extends Component {
         return result;
     }
 
+    onSubmitSearch = (keyword) => {
+        this.setState({
+            keyword: keyword
+        });
+    }
+
     render() {
-        const { tasks, isDisplayAddForm } = this.state;
+        const { isDisplayAddForm, taskEditing, filter, keyword } = this.state;
+        var { tasks } = this.state;
+
+        /* START FILTER TASKS */
+        if (filter) {
+            if (filter.name) {
+                tasks = tasks.filter((task) => {
+                    return task.name.toLowerCase().indexOf(filter.name) !== -1;
+                });
+            }
+            tasks = tasks.filter((task) => {
+                if (filter.status === -1) {
+                    return true;
+                } else {
+                    return task.status === (filter.status === 1);
+                }
+            });
+        }
+        /* END FILTER TASKS */
+
+        if (keyword) {
+            tasks = tasks.filter((task) => {
+                return task.name.toLowerCase().indexOf(keyword) !== -1;
+            });
+        }
 
         return (
             <div className="container">
@@ -123,7 +197,8 @@ class App extends Component {
                         {/* Search & sort */}
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <Control />
+                                <Control
+                                    onSubmitSearch={this.onSubmitSearch} />
                             </div>
                         </div>
 
@@ -131,10 +206,11 @@ class App extends Component {
                         <div className="row mt-15">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <TaskList
+                                    onUpdateItem={this.onUpdateItem}
                                     onToggleStatus={this.onToggleStatus}
                                     onDeleteItem={this.onDeleteItem}
                                     tasks={tasks}
-                                />
+                                    onChangeFilterValue={this.onChangeFilterValue} />
                             </div>
                         </div>
                     </div>
@@ -142,7 +218,8 @@ class App extends Component {
                         {isDisplayAddForm
                             ? <TaskForm
                                 onSubmitTaskForm={this.onSubmitTaskForm}
-                                onCloseForm={this.onCloseForm} />
+                                onCloseForm={this.onCloseForm}
+                                taskEditing={taskEditing} />
                             : ''}
                     </div>
                 </div>
