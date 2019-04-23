@@ -1,5 +1,6 @@
 import React from 'react';
 import TaskItem from './TaskItem';
+import { connect } from 'react-redux';
 
 class TaskList extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class TaskList extends React.Component {
 
         if (name === 'filterStatus') {
             value = Number(value)
-        }else{
+        } else {
             value = value.toLowerCase();
         }
 
@@ -37,8 +38,6 @@ class TaskList extends React.Component {
                 key={index}
                 index={index}
                 task={task}
-                onToggleStatus={this.props.onToggleStatus}
-                onDeleteItem={this.props.onDeleteItem}
                 onUpdateItem={this.props.onUpdateItem}
             />
         })
@@ -89,4 +88,13 @@ class TaskList extends React.Component {
     }
 }
 
-export default TaskList
+const mapStateToProps = (state) => {
+    return {
+        tasks: state.tasks
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(TaskList)

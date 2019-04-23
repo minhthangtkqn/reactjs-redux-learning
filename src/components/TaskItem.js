@@ -1,12 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 class TaskItem extends React.Component {
-    onToggleStatus = () => {
-        this.props.onToggleStatus(this.props.task.id);
+    onToggleTaskStatus = () => {
+        this.props.onToggleTaskStatus(this.props.task.id);
     }
 
     onDeleteItem = () => {
         this.props.onDeleteItem(this.props.task.id);
+        this.props.onCloseForm();
     }
 
     onUpdateItem = () => {
@@ -24,7 +27,7 @@ class TaskItem extends React.Component {
 
                     <span
                         className={`label ${task.status ? 'label-success' : 'label-default'}`}
-                        onClick={this.onToggleStatus}>
+                        onClick={this.onToggleTaskStatus}>
                         {task.status ? 'Active' : 'Inactive'}
                     </span>
                 </td>
@@ -49,4 +52,27 @@ class TaskItem extends React.Component {
     }
 }
 
-export default TaskItem
+const mapStateToProps = state => {
+    return {
+
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onToggleTaskStatus: (id) => {
+            dispatch(actions.onToggleTaskStatus(id));
+        },
+        onDeleteItem: (id) => {
+            dispatch(actions.deleteTask(id));
+        },
+        onCloseForm: () => {
+            dispatch(actions.onCloseForm());
+        }
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TaskItem)
