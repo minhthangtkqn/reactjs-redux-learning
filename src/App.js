@@ -79,12 +79,6 @@ class App extends Component {
 
     render() {
         const {
-            taskEditing,
-            // filter, 
-            // keyword 
-        } = this.state;
-
-        const {
             isDisplayForm
         } = this.props;
 
@@ -145,15 +139,13 @@ class App extends Component {
                         <div className="row mt-15">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <TaskList
-                                    // onUpdateItem={this.onUpdateItem}
                                     onChangeFilterValue={this.onChangeFilterValue} />
                             </div>
                         </div>
                     </div>
                     <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         {isDisplayForm === true
-                            ? <TaskForm
-                                taskEditing={taskEditing} />
+                            ? <TaskForm />
                             : ''}
                     </div>
                 </div>

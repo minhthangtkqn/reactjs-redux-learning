@@ -13,7 +13,8 @@ class TaskItem extends React.Component {
     }
 
     onUpdateItem = () => {
-        this.props.onUpdateItem(this.props.task.id);
+        this.props.updateEditingTask(this.props.task);
+        this.props.onOpenForm();
     }
 
     render() {
@@ -68,6 +69,15 @@ const mapDispatchToProps = dispatch => {
         },
         onCloseForm: () => {
             dispatch(actions.onCloseForm());
+        },
+        onOpenForm: () => {
+            dispatch(actions.onOpenForm());
+        },
+        onToggleForm: () => {
+            dispatch(actions.onToggleForm());
+        },
+        updateEditingTask: (task) => {
+            dispatch(actions.updateEditingTask(task));
         }
     }
 }

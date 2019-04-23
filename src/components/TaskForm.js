@@ -73,6 +73,9 @@ class TaskForm extends React.Component {
     render() {
         const { name, status, id } = this.state;
 
+        if (!this.props.isDisplayForm)
+            return '';
+
         return (
             <div className="panel panel-warning">
                 <div className="panel-heading">
@@ -112,8 +115,7 @@ class TaskForm extends React.Component {
                             <button
                                 className="btn btn-danger"
                                 type="button"
-                                onClick={this.onClearForm}
-                            >
+                                onClick={this.onClearForm}>
                                 Clear
                             </button>
                         </div>
@@ -121,12 +123,14 @@ class TaskForm extends React.Component {
                 </div>
             </div>
         )
+
     }
 }
 
 const mapStateToProps = state => {
     return {
-        isDisplayAddForm: state.tasks.isDisplayAddForm
+        isDisplayForm: state.isDisplayForm,
+        taskEditing: state.taskEditing
     }
 }
 

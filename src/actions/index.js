@@ -35,3 +35,8 @@ export const onToggleTaskStatus = (id) => ({
     type: ActionTypes.TOGGLE_TASK_STATUS,
     id
 })
+
+export const updateEditingTask = (task) => ({
+    type: ActionTypes.UPDATE_EDITING_TASK,
+    task
+})

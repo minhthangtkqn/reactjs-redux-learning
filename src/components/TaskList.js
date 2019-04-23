@@ -37,9 +37,7 @@ class TaskList extends React.Component {
             return <TaskItem
                 key={index}
                 index={index}
-                task={task}
-                onUpdateItem={this.props.onUpdateItem}
-            />
+                task={task} />
         })
 
         const { filterName, filterStatus } = this.state;
