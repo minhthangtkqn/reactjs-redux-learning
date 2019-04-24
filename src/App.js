@@ -12,7 +12,6 @@ class App extends Component {
 
         this.state = {
             keyword: '',
-            taskEditing: null,
             filter: {
                 name: '',
                 status: -1
@@ -23,33 +22,11 @@ class App extends Component {
             }
         };
     }
-
-    // toggleAddWorkForm = () => {
-    //     if (this.state.isDisplayAddForm && this.state.taskEditing !== null) {
-    //         this.setState({
-    //             taskEditing: null
-    //         })
-    //     } else {
-    //         this.setState({
-    //             isDisplayAddForm: !this.state.isDisplayAddForm,
-    //             taskEditing: null,
-    //         })
-    //     }
-    // }
-
-    // onOpenForm = () => {
-    //     this.setState({
-    //         isDisplayAddForm: true
-    //     });
-    // }
-
-    onUpdateItem = (taskId) => {
-        var index = this.findIndexById(taskId, this.state.tasks);
-        var taskEditing = this.state.tasks[index]
-        this.setState({
-            taskEditing: taskEditing
-        });
-        // this.onOpenForm();
+    onToggleForm = () => {
+        if (!this.props.isDisplayForm || this.props.taskEditing === null) {
+            this.props.onToggleForm();
+        }
+        this.props.updateEditingTask(null);
     }
 
     onChangeFilterValue = (filterData) => {
@@ -59,16 +36,6 @@ class App extends Component {
                 status: filterData.filterStatus
             }
         })
-    }
-
-    findIndexById(id, list) {
-        let result = -1;
-        list.forEach((item, index) => {
-            if (item.id === id) {
-                result = index;
-            }
-        });
-        return result;
     }
 
     onSubmitSearch = (keyword) => {
@@ -108,7 +75,7 @@ class App extends Component {
         return (
             <div className="container">
                 <div className="text-center">
-                    <h1>Work management</h1>
+                    <h1>WORK MANAGEMENT</h1>
                 </div>
 
                 {/* add box */}
@@ -119,7 +86,7 @@ class App extends Component {
                                 <div className="panel panel-default">
                                     <div className="panel-body">
                                         <button className="btn btn-primary"
-                                            onClick={this.props.onToggleForm}>
+                                            onClick={this.onToggleForm}>
                                             Add work
                                         </button>
                                     </div>
@@ -146,7 +113,7 @@ class App extends Component {
                     <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         {isDisplayForm === true
                             ? <TaskForm />
-                            : ''}
+                            : null}
                     </div>
                 </div>
             </div>
@@ -156,13 +123,17 @@ class App extends Component {
 
 const mapStateToProps = state => {
     return {
-        isDisplayForm: state.isDisplayForm
+        isDisplayForm: state.isDisplayForm,
+        taskEditing: state.taskEditing
     };
 }
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
         onToggleForm: () => {
             dispatch(actions.onToggleForm());
+        },
+        updateEditingTask: (task) => {
+            dispatch(actions.updateEditingTask(task));
         },
         onOpenForm: () => {
             dispatch(actions.onOpenForm());

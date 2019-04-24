@@ -2,6 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
+/**
+ * INPUT: props.taskEditing
+ * OUTPUT: state
+ */
+
 class TaskForm extends React.Component {
     constructor(props) {
         super(props);
@@ -14,12 +19,14 @@ class TaskForm extends React.Component {
     }
 
     componentWillMount() {
-        if (this.props.taskEditing) {
+        if (this.props.taskEditing && this.props.taskEditing.id !== '') {
             this.setState({
                 id: this.props.taskEditing.id,
                 name: this.props.taskEditing.name,
                 status: this.props.taskEditing.status
             });
+        } else {
+            this.onClearForm();
         }
     }
 
@@ -32,11 +39,7 @@ class TaskForm extends React.Component {
                     status: nextProps.taskEditing.status
                 });
             } else {
-                this.setState({
-                    id: '',
-                    name: '',
-                    status: false
-                });
+                this.onClearForm();
             }
         }
     }
@@ -67,7 +70,7 @@ class TaskForm extends React.Component {
         this.setState({
             name: '',
             status: false
-        })
+        });
     }
 
     render() {
@@ -142,6 +145,10 @@ const mapDispatchToProps = (dispatch, props) => {
             } else {
                 dispatch(actions.updateTask(task));
             }
+            dispatch(actions.updateEditingTask(null));
+        },
+        updateEditingTask: (task) => {
+            dispatch(actions.updateEditingTask(task));
         },
         onCloseForm: () => {
             dispatch(actions.onCloseForm());

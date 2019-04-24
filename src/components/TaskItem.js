@@ -7,14 +7,15 @@ class TaskItem extends React.Component {
         this.props.onToggleTaskStatus(this.props.task.id);
     }
 
-    onDeleteItem = () => {
-        this.props.onDeleteItem(this.props.task.id);
-        this.props.onCloseForm();
-    }
-
     onUpdateItem = () => {
         this.props.updateEditingTask(this.props.task);
         this.props.onOpenForm();
+    }
+
+    onDeleteItem = () => {
+        this.props.onCloseForm();
+        this.props.updateEditingTask(null);
+        this.props.onDeleteItem(this.props.task.id);
     }
 
     render() {

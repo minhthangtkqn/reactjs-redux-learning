@@ -8,7 +8,7 @@ const reducer = (state = initialState, action) => {
             return action.task;
 
         default:
-            return { ...state };
+            return state;
     }
 }
 
